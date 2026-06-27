@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المنصة الإعلامية الوطنية الموحدة | المركز الوطني لإدارة الطوارئ والأزمات والكوارث</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nccmBg: '#0b0f19',
+                        nccmSidebar: '#111827',
+                        nccmCard: '#1f2937',
+                        nccmGold: '#c29d58',
+                        nccmGreen: '#16a34a'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Cairo', sans-serif; background-color: #0b0f19; color: #f1f5f9; margin: 0; padding: 0; }
+        .sidebar-item.active {
+            background-color: rgba(194, 157, 88, 0.15) !important;
+            border-right: 4px solid #c29d58 !important;
+            color: #ffffff !important;
+        }
+        /* كود الحماية لشبكة المؤشرات لتعمل بدون الاعتماد على تيلويند */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex overflow-hidden">
+
+    <aside class="w-80 bg-[#111827] flex flex-col justify-between border-l border-slate-800 h-screen select-none z-20 shadow-2xl">
+        <div>
+            <div class="p-5 border-b border-slate-800 flex flex-col items-center text-center bg-slate-950/40">
+                <div class="w-full bg-white rounded-xl p-3 mb-3 shadow-xl flex items-center justify-center border border-slate-700">
+                    <img src="NCCM%20LOGO.jpeg" alt="شعار المركز الوطني" class="w-full h-auto object-contain max-h-28" onerror="this.src='NCCM LOGO.jpeg';">
+                </div>
+                <p class="text-xs text-[#c29d58] mt-1 font-semibold tracking-wide">المنصة الإعلامية الوطنية الموحدة</p>
+            </div>
+
+            <nav class="mt-4 px-3 space-y-1">
+                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="sidebar-item active w-full flex items-center px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-lg transition-all text-right gap-3">
+                    <span class="font-semibold text-xs">الشاشة الرئيسية لوحة المتابعة</span>
+                </button>
+
+                <button onclick="switchTab('publishing')" id="btn-publishing" class="sidebar-item w-full flex items-center px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-lg transition-all text-right gap-3">
+                    <span class="font-semibold text-xs">النشر الفوري للبيانات</span>
+                </button>
+
+                <button onclick="switchTab('rumors')" id="btn-rumors" class="sidebar-item w-full flex items-center px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-lg transition-all text-right gap-3">
+                    <span class="font-semibold text-xs">رصد الشائعات وتحليل المحتوى</span>
+                </button>
+
+                <button onclick="switchTab('infrastructure')" id="btn-infrastructure" class="sidebar-item w-full flex items-center px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white rounded-lg transition-all text-right gap-3">
+                    <span class="font-semibold text-xs">البنية التحتية والمؤشرات (KPIs)</span>
+                </button>
+            </nav>
+        </div>
+
+        <div class="p-4 border-t border-slate-800 bg-slate-950/60 text-[11px] font-mono">
+            <div class="flex justify-between items-center text-slate-400">
+                <span>حالة الشبكة السيادية:</span>
+                <span class="text-emerald-500 font-bold">آمن ومستقر</span>
+            </div>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-screen overflow-y-auto bg-[#0b0f19]">
+        <header class="bg-[#111827] border-b border-slate-800 px-8 py-4 flex justify-between items-center shadow-lg">
+            <h2 class="text-sm font-bold text-slate-200">غرفة العمليات المركزية</h2>
+        </header>
+
+        <div class="p-8 flex-1 space-y-6">
+            
+            <section id="sec-dashboard" class="tab-content space-y-6" style="display: block;">
+                <div class="bg-[#1f2937] p-6 rounded-xl border border-slate-800">
+                    <h3 class="text-xs font-bold text-white mb-4">لوحة مراقبة الأحداث والوعي الميداني اللحظي</h3>
+                    <div class="bg-slate-950 rounded-lg border border-slate-800 h-64 flex items-center justify-center">
+                        <p class="text-xs text-slate-400">لا توجد بلاغات طوارئ نشطة حالياً. الوضع الميداني مستقر.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sec-publishing" class="tab-content space-y-6" style="display: none;">
+                <div class="bg-[#1f2937] p-6 rounded-xl border border-slate-800 space-y-4">
+                    <h3 class="text-xs font-bold text-white">صياغة وتعميم الخطاب الإعلامي الموحد</h3>
+                    <textarea rows="3" placeholder="اكتب نص الخطاب الرسمي هنا..." class="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 text-xs text-slate-200 focus:outline-none"></textarea>
+                </div>
+            </section>
+
+            <section id="sec-rumors" class="tab-content space-y-6" style="display: none;">
+                <div class="bg-[#1f2937] p-6 rounded-xl border border-slate-800">
+                    <h3 class="text-xs font-bold text-white">نظام الكشف والتحقق الآلي من الشائعات</h3>
+                </div>
+            </section>
+
+            <section id="sec-infrastructure" class="tab-content space-y-6" style="display: none;">
+                <div class="bg-[#1f2937] p-6 rounded-xl border border-slate-800 space-y-6">
+                    <h3 class="text-xs font-bold text-[#c29d58] border-b border-slate-700 pb-3 flex items-center gap-2">
+                        📊 لوحة قياس مؤشرات الأداء الاستراتيجية للمنظومة (KPIs)
+                    </h3>
+                    
+                    <div class="kpi-grid">
+                        <div class="bg-slate-900 border border-slate-700 rounded-xl p-5">
+                            <div class="text-2xl font-extrabold text-blue-500 mb-1" style="color: #3b82f6;">3 دقائق</div>
+                            <div class="text-xs font-bold text-slate-200 mb-1">وقت نشر التحذير</div>
+                            <p class="text-[11px] text-slate-400 leading-relaxed">الحد الأقصى للوقت المستغرق من الموافقة الرسمية إلى البث العام.</p>
+                        </div>
+
+                        <div class="bg-slate-900 border border-slate-700 rounded-xl p-5">
+                            <div class="text-2xl font-extrabold text-emerald-500 mb-1" style="color: #10b981;">90%</div>
+                            <div class="text-xs font-bold text-slate-200 mb-1">معدل الوصول العام</div>
+                            <p class="text-[11px] text-slate-400 leading-relaxed">النسبة المستهدفة من السكان الذين يتم الوصول إليهم عبر بث الطوارئ.</p>
+                        </div>
+
+                        <div class="bg-slate-900 border border-slate-700 rounded-xl p-5">
+                            <div class="text-2xl font-extrabold text-red-500 mb-1" style="color: #ef4444;">100%</div>
+                            <div class="text-xs font-bold text-slate-200 mb-1">تغطية تحليل الشائعات</div>
+                            <p class="text-[11px] text-slate-400 leading-relaxed">جميع الشائعات المتداولة تُحلّل وتُدحض شهرياً بواسطة النظام المركزي.</p>
+                        </div>
+
+                        <div class="bg-slate-900 border border-slate-700 rounded-xl p-5">
+                            <div class="text-2xl font-extrabold text-amber-500 mb-1" style="color: #f59e0b;">25 جهة</div>
+                            <div class="text-xs font-bold text-slate-200 mb-1">الجهات الحكومية المرتبطة</div>
+                            <p class="text-[11px] text-slate-400 leading-relaxed">عدد القطاعات والوزارات المرتبطة بالمنصة والمندمجة معها بشكل نشط.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <script>
+        function switchTab(tabId) {
+            // إخفاء كافة التبويبات بالكامل عبر استخدام دالة العرض الافتراضية للمتصفح
+            const sections = document.querySelectorAll('.tab-content');
+            sections.forEach(sec => {
+                sec.style.display = 'none';
+            });
+            
+            // إلغاء تفعيل كافة الأزرار
+            const buttons = document.querySelectorAll('.sidebar-item');
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // إظهار التبويب المطلوب بدقة وحتمية
+            const activeSection = document.getElementById('sec-' + tabId);
+            if (activeSection) {
+                activeSection.style.display = 'block';
+            }
+            
+            // تفعيل الزر المختار مظهرًا
+            const activeButton = document.getElementById('btn-' + tabId);
+            if (activeButton) {
+                activeButton.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
