@@ -1,0 +1,246 @@
+<!-- src/components/Dashboard/Dashboard.html -->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة المراقبة التفاعلية — مركز العمليات الإعلامية المشتركة</title>
+  <meta name="description" content="لوحة المراقبة التفاعلية لمركز العمليات الإعلامية — المنصة الإعلامية الوطنية الموحدة">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="Dashboard.css">
+</head>
+<body>
+
+  <a class="skip-link" href="#main-content">تخطّ إلى المحتوى الرئيسي</a>
+
+  <!-- ══ TOP BAR ══ -->
+  <header class="topbar" role="banner">
+    <div class="topbar-left">
+      <div class="logo-circle" aria-hidden="true">
+        <span>م.و</span>
+      </div>
+      <div class="topbar-titles">
+        <div class="topbar-title">مركز العمليات الإعلامية المشتركة</div>
+        <div class="topbar-sub">المنصة الإعلامية الوطنية الموحدة — طرابلس</div>
+      </div>
+    </div>
+
+    <div class="topbar-center" aria-hidden="true">
+      <span class="platform-label">المنصة الإعلامية الوطنية الموحدة</span>
+    </div>
+
+    <div class="topbar-right">
+      <div class="status-live" role="status" aria-live="polite" aria-label="حالة البث المباشر والوقت الحالي">
+        <div class="pulse" aria-hidden="true"></div>
+        <time id="live-time" datetime="">--:--:--</time>
+        <span>بث مباشر</span>
+      </div>
+      <button class="btn-refresh" id="btn-refresh" aria-label="تحديث البيانات">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <polyline points="23 4 23 10 17 10"></polyline>
+          <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+        </svg>
+        تحديث
+      </button>
+    </div>
+  </header>
+
+  <!-- ══ MAIN ══ -->
+  <main id="main-content" class="dash-body" tabindex="-1">
+
+    <!-- KPI Row -->
+    <section class="kpi-row" aria-label="مؤشرات الأداء الرئيسية">
+      <div class="kpi" id="kpi-alerts">
+        <div class="kpi-label">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          التنبيهات النشطة
+        </div>
+        <div class="kpi-val" aria-label="7 تنبيهات نشطة">7</div>
+        <div class="kpi-change up" aria-label="ارتفع بمقدار 2 منذ الساعة الماضية">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>
+          +2 منذ الساعة الماضية
+        </div>
+      </div>
+
+      <div class="kpi" id="kpi-pub">
+        <div class="kpi-label">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          وقت النشر الأخير
+        </div>
+        <div class="kpi-val" aria-label="1 دقيقة و42 ثانية">1:42</div>
+        <div class="kpi-change neutral" aria-label="ضمن هدف 3 دقائق">دقيقة — ضمن الهدف 3 دقائق</div>
+      </div>
+
+      <div class="kpi" id="kpi-rumors">
+        <div class="kpi-label">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          شائعات قيد التحليل
+        </div>
+        <div class="kpi-val" aria-label="14 شائعة قيد التحليل">14</div>
+        <div class="kpi-change down" aria-label="3 شائعات عالية الخطورة">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+          3 عالية الخطورة
+        </div>
+      </div>
+
+      <div class="kpi" id="kpi-entities">
+        <div class="kpi-label">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          الجهات المتصلة
+        </div>
+        <div class="kpi-val" aria-label="23 من أصل 25 جهة متصلة">
+          23<span class="kpi-of">/25</span>
+        </div>
+        <div class="kpi-change neutral" aria-label="جهتان غير نشطتين">جهتان غير نشطتين</div>
+      </div>
+    </section>
+
+    <!-- Main Grid -->
+    <div class="main-grid">
+
+      <!-- LEFT: Heatmap + Publish Chart + Alerts -->
+      <div class="col-main">
+
+        <!-- Heatmap Card -->
+        <article class="card" aria-labelledby="heatmap-title">
+          <div class="card-hdr">
+            <h2 class="card-title" id="heatmap-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+              خريطة حرارية للأحداث — آخر 12 ساعة
+            </h2>
+            <div class="badge-group" aria-label="مستويات الحدة">
+              <span class="badge badge-red">مرتفع</span>
+              <span class="badge badge-amber">متوسط</span>
+              <span class="badge badge-green">منخفض</span>
+            </div>
+          </div>
+          <p class="section-label">المنطقة × الفترة الزمنية</p>
+          <div
+            class="heatmap-grid"
+            id="heatmap"
+            role="img"
+            aria-label="خريطة حرارية تُظهر كثافة الأحداث عبر 8 مناطق خلال آخر 12 ساعة"
+          ></div>
+          <div class="hm-labels" aria-hidden="true">
+            <span>الآن</span>
+            <span>منذ 6 ساعات</span>
+            <span>منذ 12 ساعة</span>
+          </div>
+          <div class="legend-row" aria-label="مفتاح الألوان">
+            <span class="legend-swatch" style="background:#fca5a5" aria-hidden="true"></span><span>حوادث إعلامية</span>
+            <span class="legend-swatch" style="background:#fcd34d;margin-right:8px" aria-hidden="true"></span><span>تنبيهات</span>
+            <span class="legend-swatch" style="background:#86efac;margin-right:8px" aria-hidden="true"></span><span>هادئ</span>
+            <span class="legend-swatch" style="background:#e2e8f0;margin-right:8px" aria-hidden="true"></span><span>لا بيانات</span>
+          </div>
+        </article>
+
+        <!-- Publish Activity Chart -->
+        <article class="card" aria-labelledby="publish-chart-title">
+          <div class="card-hdr">
+            <h2 class="card-title" id="publish-chart-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              نشاط النشر — آخر 6 ساعات
+            </h2>
+            <span class="badge badge-blue" id="total-pub-badge">إجمالي: 41 بياناً</span>
+          </div>
+          <div class="chart-wrap" style="height:140px;">
+            <canvas
+              id="publishChart"
+              role="img"
+              aria-label="مخطط شريطي لنشاط النشر على مدى 6 ساعات: 4، 7، 3، 9، 12، 6 بيانات صحفية على التوالي"
+            ></canvas>
+          </div>
+        </article>
+
+        <!-- Active Alerts -->
+        <article class="card" aria-labelledby="alerts-title">
+          <div class="card-hdr">
+            <h2 class="card-title" id="alerts-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              التنبيهات الفورية النشطة
+            </h2>
+            <span class="badge badge-blue" id="alert-count-badge" aria-live="polite">7 نشط</span>
+          </div>
+          <div class="alert-list" id="alerts-list" role="list" aria-label="قائمة التنبيهات النشطة"></div>
+          <button
+            class="btn-full"
+            onclick="sendPrompt('اعرض تفاصيل جميع التنبيهات النشطة وخطط الاستجابة المقترحة')"
+            aria-label="عرض التفاصيل الكاملة لجميع التنبيهات"
+          >
+            عرض التفاصيل الكاملة ↗
+          </button>
+        </article>
+
+      </div><!-- /col-main -->
+
+      <!-- RIGHT: Rumors + Entities + Channel Chart -->
+      <div class="col-side">
+
+        <!-- Rumors Unit -->
+        <article class="card" aria-labelledby="rumors-title">
+          <div class="card-hdr">
+            <h2 class="card-title" id="rumors-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              وحدة رصد الشائعات — ذكاء اصطناعي
+            </h2>
+            <span class="badge badge-red" aria-label="3 شائعات عالية الخطورة">3 عالية الخطورة</span>
+          </div>
+          <div class="tab-row" role="tablist" aria-label="تصفية الشائعات حسب مستوى الخطورة">
+            <button class="tab active" role="tab" aria-selected="true"  id="tab-all"  aria-controls="rumors-list" onclick="filterRumors('all',this)">الكل (14)</button>
+            <button class="tab"        role="tab" aria-selected="false" id="tab-high" aria-controls="rumors-list" onclick="filterRumors('high',this)">عالية (3)</button>
+            <button class="tab"        role="tab" aria-selected="false" id="tab-med"  aria-controls="rumors-list" onclick="filterRumors('med',this)">متوسطة (7)</button>
+            <button class="tab"        role="tab" aria-selected="false" id="tab-low"  aria-controls="rumors-list" onclick="filterRumors('low',this)">منخفضة (4)</button>
+          </div>
+          <div class="rumor-list" id="rumors-list" role="list" aria-label="قائمة الشائعات المرصودة"></div>
+        </article>
+
+        <!-- Government Entities -->
+        <article class="card" aria-labelledby="entities-title">
+          <div class="card-hdr">
+            <h2 class="card-title" id="entities-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+              الجهات الحكومية المتصلة
+            </h2>
+            <span class="badge badge-green" aria-label="23 من 25 جهة نشطة">23/25 نشطة</span>
+          </div>
+          <div class="entities-grid" id="entities-grid" role="list" aria-label="شبكة الجهات الحكومية المتصلة"></div>
+        </article>
+
+        <!-- Channel Distribution -->
+        <article class="card" aria-labelledby="channel-chart-title">
+          <div class="card-hdr">
+            <h2 class="card-title" id="channel-chart-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              توزيع قنوات النشر
+            </h2>
+          </div>
+          <div class="chart-wrap" style="height:130px;">
+            <canvas
+              id="channelChart"
+              role="img"
+              aria-label="مخطط دائري يوضح توزيع قنوات النشر: تلفزيون 30%، تواصل اجتماعي 35%، SMS 20%، بريد إلكتروني 15%"
+            ></canvas>
+          </div>
+          <div class="channel-legend" aria-label="مفتاح قنوات النشر">
+            <span class="ch-pill"><span class="ch-dot" style="background:#3b82f6" aria-hidden="true"></span>تلفزيون 30%</span>
+            <span class="ch-pill"><span class="ch-dot" style="background:#8b5cf6" aria-hidden="true"></span>تواصل اجتماعي 35%</span>
+            <span class="ch-pill"><span class="ch-dot" style="background:#10b981" aria-hidden="true"></span>SMS 20%</span>
+            <span class="ch-pill"><span class="ch-dot" style="background:#f59e0b" aria-hidden="true"></span>بريد إلكتروني 15%</span>
+          </div>
+        </article>
+
+      </div><!-- /col-side -->
+    </div><!-- /main-grid -->
+
+  </main>
+
+  <!-- Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"
+          integrity="sha512-ZwR1/gSZM3ai6vCdI+LVF1zSq/5HznD3oD+sCoJrzXJ+yKrasmUl8wEkQqdxGBEOhdUefsKeYT4yv8qCG8bQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="Dashboard.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,678 @@
+<!-- src/components/Gateway/OpsGateway.html -->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>بوابة الإدخال الحكومي — API Gateway | المنصة الإعلامية الوطنية الموحدة</title>
+  <meta name="description" content="بوابة إدخال البيانات الحكومية ونظام التنبيه الجغرافي وسير عمل النشر — المنصة الإعلامية الوطنية الموحدة">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="OpsGateway.css">
+</head>
+<body>
+
+  <a class="skip-link" href="#main-content">تخطّ إلى المحتوى الرئيسي</a>
+
+  <!-- ══ TOP BAR ══ -->
+  <header class="topbar" role="banner">
+    <div class="topbar-left">
+      <div class="logo-circle" aria-hidden="true"><span>م.و</span></div>
+      <div class="topbar-titles">
+        <div class="topbar-title">واجهات التشغيل والعمليات</div>
+        <div class="topbar-sub">بوابة الإدخال الحكومي · نظام التنبيه الجغرافي · سير عمل النشر</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="conn-status" id="conn-status" role="status" aria-live="polite">
+        <span class="conn-dot connected" aria-hidden="true"></span>
+        <span>API Gateway متصل</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══ MAIN ══ -->
+  <main id="main-content" class="page-body" tabindex="-1">
+
+    <!-- ─────────────────────────────────────
+         SECTION 1 — API GATEWAY INPUT FORM
+         ───────────────────────────────────── -->
+    <section class="page-section" aria-labelledby="gateway-title">
+
+      <div class="sec-header">
+        <div class="sec-icon" style="background:#eff6ff;color:#1e40af" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </div>
+        <div>
+          <h1 class="sec-title" id="gateway-title">بوابة إدخال البيانات الحكومية — API Gateway</h1>
+          <p class="sec-sub">إرسال البيانات العاجلة · نشر في أقل من 30 ثانية</p>
+        </div>
+        <span class="badge badge-green sec-badge" id="gateway-conn-badge">متصل</span>
+      </div>
+
+      <!-- KPI Mini Row -->
+      <div class="kpi-mini-row" aria-label="إحصاءات اليوم">
+        <div class="kpi-mini">
+          <div class="kpi-mini-val" id="pub-count">147</div>
+          <div class="kpi-mini-lbl">بيانات اليوم</div>
+        </div>
+        <div class="kpi-mini">
+          <div class="kpi-mini-val" style="color:#16a34a">18 ث</div>
+          <div class="kpi-mini-lbl">متوسط وقت النشر</div>
+        </div>
+        <div class="kpi-mini">
+          <div class="kpi-mini-val" style="color:#f59e0b" id="pending-count">3</div>
+          <div class="kpi-mini-lbl">قيد المراجعة</div>
+        </div>
+      </div>
+
+      <!-- Input Form Card -->
+      <div class="card" role="form" aria-labelledby="form-title">
+        <h2 class="card-section-title" id="form-title">نموذج إرسال البيان الرسمي</h2>
+
+        <!-- Row 1: Entity + Token -->
+        <div class="field-row-2">
+          <div class="field-group">
+            <label class="field-label" for="entity-sel">
+              <span class="field-req" aria-hidden="true">*</span>
+              الجهة المُرسِلة
+            </label>
+            <select
+              id="entity-sel"
+              name="entity"
+              required
+              aria-required="true"
+              aria-describedby="entity-hint"
+              onchange="handleEntityChange()"
+            >
+              <option value="">— اختر الجهة —</option>
+              <option value="MOI">وزارة الداخلية</option>
+              <option value="MOH">وزارة الصحة</option>
+              <option value="MOD">وزارة الدفاع</option>
+              <option value="MOT">وزارة المواصلات</option>
+              <option value="GECOL">الشركة العامة للكهرباء</option>
+              <option value="NLITC">شركة الاتصالات الليبية</option>
+              <option value="CIVIL">الحماية المدنية</option>
+              <option value="MUN">البلديات</option>
+              <option value="MFA">وزارة الخارجية</option>
+              <option value="MOJ">وزارة العدل</option>
+              <option value="MOE">وزارة التعليم</option>
+              <option value="NCECDM">المركز الوطني للطوارئ</option>
+            </select>
+            <span id="entity-hint" class="field-hint">اختر الجهة الحكومية المُخوَّلة بإرسال هذا البيان</span>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="token-field">رمز المصادقة (Bearer Token)</label>
+            <div class="input-wrap">
+              <input
+                type="text"
+                id="token-field"
+                name="token"
+                value="••••••••••••••••••••"
+                readonly
+                aria-readonly="true"
+                aria-describedby="token-hint"
+                class="input-mono"
+              >
+              <span class="input-badge" aria-hidden="true">JWT</span>
+            </div>
+            <span id="token-hint" class="field-hint">يُولَّد تلقائياً عند اختيار الجهة</span>
+          </div>
+        </div>
+
+        <!-- Row 2: Event Type + Priority -->
+        <div class="field-row-2">
+          <div class="field-group">
+            <label class="field-label" for="event-type">
+              <span class="field-req" aria-hidden="true">*</span>
+              نوع الحدث
+            </label>
+            <select
+              id="event-type"
+              name="eventType"
+              required
+              aria-required="true"
+              onchange="checkFormReadiness()"
+            >
+              <option value="">— اختر نوع الحدث —</option>
+              <option value="flood">فيضان / سيول</option>
+              <option value="fire">حريق</option>
+              <option value="quake">زلزال</option>
+              <option value="security">حادثة أمنية</option>
+              <option value="health">تنبيه صحي</option>
+              <option value="infra">بنية تحتية</option>
+              <option value="evac">إخلاء</option>
+              <option value="press">بيان رسمي</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <div class="field-label" id="priority-label">
+              <span class="field-req" aria-hidden="true">*</span>
+              مستوى الأولوية
+            </div>
+            <div
+              class="pri-grid"
+              role="radiogroup"
+              aria-labelledby="priority-label"
+              aria-required="true"
+            >
+              <button
+                type="button"
+                class="pri-btn"
+                id="pri-btn-1"
+                role="radio"
+                aria-checked="false"
+                aria-label="أولوية P1 — طارئ"
+                onclick="setPriority(1, this)"
+                data-level="1"
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <span>P1 طارئ</span>
+              </button>
+              <button
+                type="button"
+                class="pri-btn"
+                id="pri-btn-2"
+                role="radio"
+                aria-checked="false"
+                aria-label="أولوية P2 — عاجل"
+                onclick="setPriority(2, this)"
+                data-level="2"
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <span>P2 عاجل</span>
+              </button>
+              <button
+                type="button"
+                class="pri-btn"
+                id="pri-btn-3"
+                role="radio"
+                aria-checked="false"
+                aria-label="أولوية P3 — مهم"
+                onclick="setPriority(3, this)"
+                data-level="3"
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <span>P3 مهم</span>
+              </button>
+              <button
+                type="button"
+                class="pri-btn"
+                id="pri-btn-4"
+                role="radio"
+                aria-checked="false"
+                aria-label="أولوية P4 — عادي"
+                onclick="setPriority(4, this)"
+                data-level="4"
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                <span>P4 عادي</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 3: Alert Title -->
+        <div class="field-group">
+          <label class="field-label" for="alert-title">
+            <span class="field-req" aria-hidden="true">*</span>
+            عنوان البيان العاجل
+          </label>
+          <input
+            type="text"
+            id="alert-title"
+            name="alertTitle"
+            placeholder="مثال: تحذير فيضان — وادي الرياح — منطقة الجفارة"
+            required
+            aria-required="true"
+            maxlength="120"
+            aria-describedby="title-counter"
+            oninput="handleTitleInput()"
+          >
+          <div class="field-footer">
+            <span id="title-hint" class="field-hint">وصف موجز ومحدد للحدث وموقعه</span>
+            <span id="title-counter" class="char-counter" aria-live="polite">0 / 120</span>
+          </div>
+        </div>
+
+        <!-- Row 4: Alert Body -->
+        <div class="field-group">
+          <label class="field-label" for="alert-body">
+            <span class="field-req" aria-hidden="true">*</span>
+            نص البيان الرسمي
+          </label>
+          <textarea
+            id="alert-body"
+            name="alertBody"
+            rows="4"
+            placeholder="يُوجَّه هذا التحذير للسكان في منطقة... يُرجى اتخاذ الإجراءات التالية..."
+            required
+            aria-required="true"
+            maxlength="500"
+            aria-describedby="body-counter body-hint"
+            oninput="handleBodyInput()"
+          ></textarea>
+          <div class="field-footer">
+            <span id="body-hint" class="field-hint">يُرجى استخدام لغة واضحة ومباشرة وتجنب المصطلحات التقنية</span>
+            <span id="body-counter" class="char-counter" aria-live="polite">0 / 500</span>
+          </div>
+        </div>
+
+        <!-- Row 5: Date + Time + Confirm -->
+        <div class="field-row-3">
+          <div class="field-group">
+            <label class="field-label" for="event-date">تاريخ الحدث</label>
+            <input type="date" id="event-date" name="eventDate" aria-describedby="date-hint">
+            <span id="date-hint" class="field-hint sr-only">اختر تاريخ وقوع الحدث</span>
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="event-time">وقت الحدث</label>
+            <input type="time" id="event-time" name="eventTime">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="confirm-select">طلب تأكيد بالعودة</label>
+            <select id="confirm-select" name="confirmRequest">
+              <option value="no">لا</option>
+              <option value="30m">نعم — خلال 30 دقيقة</option>
+              <option value="1h">نعم — خلال ساعة</option>
+              <option value="2h">نعم — خلال ساعتين</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Row 6: Related Entities -->
+        <div class="field-group">
+          <div class="field-label" id="related-entities-label">ربط الجهات المعنية</div>
+          <div class="entity-search-row" role="group" aria-labelledby="related-entities-label">
+            <select
+              id="entity-picker"
+              aria-label="إضافة جهة معنية"
+              aria-describedby="entity-picker-hint"
+            >
+              <option value="">إضافة جهة...</option>
+              <option value="وزارة الصحة">وزارة الصحة</option>
+              <option value="الحماية المدنية">الحماية المدنية</option>
+              <option value="البلديات">البلديات</option>
+              <option value="الشرطة الوطنية">الشرطة الوطنية</option>
+              <option value="وزارة الدفاع">وزارة الدفاع</option>
+              <option value="المواصلات">وزارة المواصلات</option>
+              <option value="الإسعاف الوطني">الإسعاف الوطني</option>
+              <option value="الكهرباء">الشركة العامة للكهرباء</option>
+              <option value="البيئة">وزارة البيئة</option>
+              <option value="الهجرة">وزارة الهجرة</option>
+            </select>
+            <button
+              type="button"
+              class="btn-add-entity"
+              onclick="addRelatedEntity()"
+              aria-label="إضافة الجهة المختارة"
+            >
+              إضافة
+            </button>
+          </div>
+          <span id="entity-picker-hint" class="field-hint">اختر الجهات التي سيُبلَّغ عنها بشكل مباشر</span>
+          <div
+            class="entity-tags"
+            id="entity-tags"
+            role="list"
+            aria-label="الجهات المضافة"
+            aria-live="polite"
+          >
+            <span class="etag" role="listitem">
+              الحماية المدنية
+              <button
+                type="button"
+                class="etag-remove"
+                aria-label="إزالة الحماية المدنية"
+                onclick="removeEntityTag(this)"
+              >×</button>
+            </span>
+            <span class="etag" role="listitem">
+              البلديات
+              <button
+                type="button"
+                class="etag-remove"
+                aria-label="إزالة البلديات"
+                onclick="removeEntityTag(this)"
+              >×</button>
+            </span>
+          </div>
+        </div>
+
+        <!-- Publish Target Time Badge -->
+        <div class="timer-badge" role="note" aria-label="هدف وقت النشر: أقل من 30 ثانية">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1B3A6B" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span class="timer-badge-label">هدف وقت النشر:</span>
+          <span class="timer-badge-value">أقل من 30 ثانية</span>
+          <span class="timer-badge-note">النشر الفوري عبر API Gateway بعد الموافقة</span>
+        </div>
+
+        <!-- Submit Row -->
+        <div class="submit-row">
+          <button
+            type="button"
+            class="btn-primary"
+            id="send-btn"
+            disabled
+            aria-disabled="true"
+            aria-describedby="send-hint"
+            onclick="handleSendAlert()"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            إرسال للنشر الفوري
+          </button>
+          <button
+            type="button"
+            class="btn-secondary"
+            id="save-draft-btn"
+            onclick="handleSaveDraft()"
+            aria-label="حفظ كمسودة"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            حفظ كمسودة
+          </button>
+        </div>
+        <span id="send-hint" class="field-hint sr-only">يجب ملء جميع الحقول المطلوبة وتحديد الأولوية لتفعيل زر الإرسال</span>
+
+        <!-- Validation Summary -->
+        <div
+          class="validation-summary"
+          id="validation-summary"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+          style="display:none"
+        ></div>
+
+        <!-- Success Banner -->
+        <div
+          class="success-banner"
+          id="success-banner"
+          role="status"
+          aria-live="polite"
+          style="display:none"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          <span id="success-text">تم الإرسال بنجاح — جارٍ تشغيل سير العمل...</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────
+         SECTION 2 — GEO-TARGETING ALERT SYSTEM
+         ───────────────────────────────────── -->
+    <section class="page-section" aria-labelledby="geo-title">
+
+      <div class="sec-header">
+        <div class="sec-icon" style="background:#fff7ed;color:#c2410c" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div>
+          <h2 class="sec-title" id="geo-title">نظام التنبيه الفوري — Geo-targeting</h2>
+          <p class="sec-sub">SMS · بريد إلكتروني · تطبيقات · تحديد جغرافي للمناطق المتأثرة</p>
+        </div>
+        <span class="badge badge-red sec-badge" id="target-count-badge" aria-live="polite">0 منطقة محددة</span>
+      </div>
+
+      <div class="card">
+
+        <!-- Channel Selection -->
+        <div class="field-group">
+          <div class="field-label" id="channels-label">اختيار قنوات الإرسال</div>
+          <div
+            class="channel-grid"
+            role="group"
+            aria-labelledby="channels-label"
+          >
+            <button type="button" class="ch-btn active" data-ch="sms"    aria-pressed="true"  onclick="toggleChannel(this)">
+              <svg class="ch-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              SMS
+            </button>
+            <button type="button" class="ch-btn active" data-ch="email"  aria-pressed="true"  onclick="toggleChannel(this)">
+              <svg class="ch-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              بريد إلكتروني
+            </button>
+            <button type="button" class="ch-btn active" data-ch="app"    aria-pressed="true"  onclick="toggleChannel(this)">
+              <svg class="ch-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              تطبيق الجوال
+            </button>
+            <button type="button" class="ch-btn"        data-ch="tv"     aria-pressed="false" onclick="toggleChannel(this)">
+              <svg class="ch-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg>
+              تلفزيون رسمي
+            </button>
+            <button type="button" class="ch-btn"        data-ch="radio"  aria-pressed="false" onclick="toggleChannel(this)">
+              <svg class="ch-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 14C2 9 5.5 5 12 5s10 4 10 9"/><circle cx="12" cy="14" r="3"/><line x1="12" y1="17" x2="12" y2="22"/></svg>
+              راديو وطني
+            </button>
+            <button type="button" class="ch-btn"        data-ch="social" aria-pressed="false" onclick="toggleChannel(this)">
+              <svg class="ch-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+              تواصل اجتماعي
+            </button>
+          </div>
+        </div>
+
+        <!-- Geographic Selection -->
+        <div class="field-group">
+          <div class="field-label" id="geo-label">التحديد الجغرافي — المناطق المتأثرة</div>
+          <div
+            class="geo-grid"
+            role="group"
+            aria-labelledby="geo-label"
+          >
+            <button type="button" class="geo-btn"        data-region="طرابلس"      aria-pressed="false" onclick="toggleRegion(this)">طرابلس</button>
+            <button type="button" class="geo-btn active" data-region="الجفارة"     aria-pressed="true"  onclick="toggleRegion(this)">الجفارة</button>
+            <button type="button" class="geo-btn"        data-region="مصراتة"      aria-pressed="false" onclick="toggleRegion(this)">مصراتة</button>
+            <button type="button" class="geo-btn active" data-region="درنة"        aria-pressed="true"  onclick="toggleRegion(this)">درنة</button>
+            <button type="button" class="geo-btn"        data-region="بنغازي"      aria-pressed="false" onclick="toggleRegion(this)">بنغازي</button>
+            <button type="button" class="geo-btn"        data-region="سبها"        aria-pressed="false" onclick="toggleRegion(this)">سبها</button>
+            <button type="button" class="geo-btn"        data-region="الجبل الغربي" aria-pressed="false" onclick="toggleRegion(this)">الجبل الغربي</button>
+            <button type="button" class="geo-btn"        data-region="الكفرة"      aria-pressed="false" onclick="toggleRegion(this)">الكفرة</button>
+          </div>
+        </div>
+
+        <!-- Libya SVG Map -->
+        <div
+          class="geo-map"
+          role="img"
+          aria-label="خريطة ليبيا المبسطة تُظهر المناطق المحددة للتنبيه"
+        >
+          <svg
+            width="100%"
+            height="100%"
+            viewBox="0 0 620 130"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <!-- Tripoli -->
+            <rect id="map-طرابلس"      class="map-region" data-region="طرابلس"       x="20"  y="15" width="85"  height="52" rx="5"/>
+            <text class="map-label"    x="62"  y="45" text-anchor="middle">طرابلس</text>
+            <!-- Jafara -->
+            <rect id="map-الجفارة"     class="map-region active-geo" data-region="الجفارة"  x="115" y="10" width="78"  height="57" rx="5"/>
+            <text class="map-label active-label" x="154" y="42" text-anchor="middle">الجفارة</text>
+            <!-- Misrata -->
+            <rect id="map-مصراتة"      class="map-region" data-region="مصراتة"       x="203" y="22" width="72"  height="47" rx="5"/>
+            <text class="map-label"    x="239" y="50" text-anchor="middle">مصراتة</text>
+            <!-- Benghazi -->
+            <rect id="map-بنغازي"      class="map-region" data-region="بنغازي"       x="285" y="18" width="78"  height="52" rx="5"/>
+            <text class="map-label"    x="324" y="48" text-anchor="middle">بنغازي</text>
+            <!-- Derna -->
+            <rect id="map-درنة"        class="map-region active-geo" data-region="درنة"     x="373" y="12" width="68"  height="50" rx="5"/>
+            <text class="map-label active-label" x="407" y="41" text-anchor="middle">درنة</text>
+            <!-- Sabha -->
+            <rect id="map-سبها"        class="map-region" data-region="سبها"         x="451" y="38" width="68"  height="52" rx="5"/>
+            <text class="map-label"    x="485" y="68" text-anchor="middle">سبها</text>
+            <!-- Western Mountain -->
+            <rect id="map-الجبل الغربي" class="map-region" data-region="الجبل الغربي" x="529" y="20" width="75"  height="45" rx="5"/>
+            <text class="map-label"    x="566" y="47" text-anchor="middle" font-size="7.5">الجبل الغربي</text>
+          </svg>
+        </div>
+
+        <!-- Audience + Repeat -->
+        <div class="field-row-2">
+          <div class="field-group">
+            <label class="field-label" for="audience-select">الفئة المستهدفة</label>
+            <select id="audience-select" name="audience">
+              <option value="all">الجمهور العام</option>
+              <option value="registered">المسجلون في التطبيق فقط</option>
+              <option value="vulnerable">كبار السن والأطفال أولاً</option>
+              <option value="tourists">السياح والأجانب</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="repeat-select">تكرار الإرسال</label>
+            <select id="repeat-select" name="repeatInterval">
+              <option value="once">مرة واحدة</option>
+              <option value="30m">كل 30 دقيقة</option>
+              <option value="1h">كل ساعة</option>
+              <option value="auto">تلقائي — حتى الإلغاء</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Estimated Reach -->
+        <div class="reach-display" role="status" aria-live="polite" aria-label="تقدير عدد المستفيدين">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span class="reach-label">المستفيدون المقدَّرون:</span>
+          <span class="reach-val" id="reach-estimate">840,000</span>
+          <span class="reach-unit">شخص في المناطق المحددة</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────
+         SECTION 3 — WORKFLOW TRACKER
+         ───────────────────────────────────── -->
+    <section class="page-section" aria-labelledby="workflow-title">
+
+      <div class="sec-header">
+        <div class="sec-icon" style="background:#f0fdf4;color:#166534" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div>
+          <h2 class="sec-title" id="workflow-title">سير العمل — من الموافقة إلى البث العام</h2>
+          <p class="sec-sub">الحد الأقصى: 3 دقائق · مؤشر الأداء الرئيسي KPI-1</p>
+        </div>
+        <span class="badge badge-blue" id="wf-elapsed-badge" aria-live="polite">00:00</span>
+      </div>
+
+      <div class="card">
+
+        <!-- Progress Bar -->
+        <div class="wf-progress-wrap" aria-label="نسبة الإنجاز نحو هدف 3 دقائق">
+          <span class="wf-progress-label">التقدم نحو هدف 3 دقائق</span>
+          <div class="wf-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="wf-progress-bar">
+            <div class="wf-progress-fill" id="wf-progress-fill" style="width:0%"></div>
+          </div>
+          <span class="wf-progress-pct" id="wf-progress-pct" aria-hidden="true">0%</span>
+        </div>
+
+        <!-- Timeline Segments -->
+        <div class="timeline-bar" id="timeline-bar" aria-hidden="true">
+          <div class="t-seg active-seg" data-step="0">1</div>
+          <div class="t-seg"            data-step="1">2</div>
+          <div class="t-seg"            data-step="2">3</div>
+          <div class="t-seg"            data-step="3">4</div>
+          <div class="t-seg"            data-step="4">5</div>
+        </div>
+
+        <!-- Workflow Steps -->
+        <ol class="wf-steps" id="wf-steps" aria-label="خطوات سير عمل النشر">
+
+          <li class="wf-step active" data-step="0" aria-label="الخطوة 1: إرسال الجهة الحكومية — قيد التنفيذ">
+            <div class="step-dot dot-active pulse-dot" aria-hidden="true">1</div>
+            <div class="step-body">
+              <div class="step-title">إرسال الجهة الحكومية</div>
+              <div class="step-detail">الجهة ترسل البيان عبر API Gateway بـ Bearer Token JWT مشفّر — TLS 1.3</div>
+              <div class="step-time" id="t0" aria-live="polite"></div>
+            </div>
+            <span class="badge badge-blue step-eta">~5 ث</span>
+          </li>
+
+          <li class="wf-step waiting" data-step="1" aria-label="الخطوة 2: التحقق التلقائي بالذكاء الاصطناعي — في الانتظار">
+            <div class="step-dot dot-wait" aria-hidden="true">2</div>
+            <div class="step-body">
+              <div class="step-title">التحقق التلقائي بالذكاء الاصطناعي</div>
+              <div class="step-detail">فحص التكرار، التحقق من مصدر الجهة، كشف المحتوى الحساس أو المضلل</div>
+              <div class="step-time" id="t1" aria-live="polite"></div>
+            </div>
+            <span class="badge badge-purple step-eta">~10 ث</span>
+          </li>
+
+          <li class="wf-step waiting" data-step="2" aria-label="الخطوة 3: موافقة محرر مركز العمليات — في الانتظار">
+            <div class="step-dot dot-wait" aria-hidden="true">3</div>
+            <div class="step-body">
+              <div class="step-title">موافقة محرر مركز العمليات</div>
+              <div class="step-detail">مراجعة بشرية واعتماد المحتوى — تنبيهات P1 تمر تلقائياً دون انتظار</div>
+              <div class="step-time" id="t2" aria-live="polite"></div>
+            </div>
+            <span class="badge badge-amber step-eta">~60 ث</span>
+          </li>
+
+          <li class="wf-step waiting" data-step="3" aria-label="الخطوة 4: نشر فوري عبر API Gateway — في الانتظار">
+            <div class="step-dot dot-wait" aria-hidden="true">4</div>
+            <div class="step-body">
+              <div class="step-title">نشر فوري عبر API Gateway</div>
+              <div class="step-detail">البث لجميع المنصات، إرسال SMS والبريد الإلكتروني والتطبيقات بالتوازي</div>
+              <div class="step-time" id="t3" aria-live="polite"></div>
+            </div>
+            <span class="badge badge-blue step-eta">~10 ث</span>
+          </li>
+
+          <li class="wf-step waiting" data-step="4" aria-label="الخطوة 5: تأكيد البث العام — في الانتظار">
+            <div class="step-dot dot-wait" aria-hidden="true">5</div>
+            <div class="step-body">
+              <div class="step-title">تأكيد البث العام</div>
+              <div class="step-detail">تسجيل في الأرشيف الرقمي الآمن · إشعار بالإكمال للجهة المُرسِلة · تحديث KPI</div>
+              <div class="step-time" id="t4" aria-live="polite"></div>
+            </div>
+            <span class="badge badge-green step-eta">~5 ث</span>
+          </li>
+
+        </ol>
+
+        <!-- Timer + Controls -->
+        <div class="wf-controls">
+          <div class="wf-timer-block" aria-label="المؤقت الكلي">
+            <div class="wf-timer-val" id="wf-timer" aria-live="polite">0:00</div>
+            <div class="wf-timer-lbl">الهدف: &lt; 3:00 دقائق</div>
+          </div>
+          <div class="wf-status-block">
+            <div class="wf-status-text" id="wf-status-text">انتظار إرسال البيان...</div>
+            <div class="wf-kpi-label">KPI-1: وقت نشر التحذير</div>
+          </div>
+          <div class="wf-btn-group">
+            <button
+              type="button"
+              class="btn-primary"
+              id="wf-run-btn"
+              onclick="runWorkflow()"
+              aria-label="محاكاة سير عمل النشر"
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              محاكاة
+            </button>
+            <button
+              type="button"
+              class="btn-secondary btn-icon"
+              id="wf-reset-btn"
+              onclick="resetWorkflow()"
+              aria-label="إعادة تعيين سير العمل"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script src="OpsGateway.js"></script>
+
+</body>
+</html>
